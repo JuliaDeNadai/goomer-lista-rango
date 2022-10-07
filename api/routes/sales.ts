@@ -10,9 +10,8 @@ routerSale.route("/")
 
 routerSale.route("/:id")
     .get(saleController.get_sale)
-    //.put(categoryController.update)
 
-    // busca a promoções de um produto expecífico
+// Rota onde é possível recuperar todas as promoções de um dado produto
 routerSale.route("/:id/products")
     .get(saleController.get_sales_by_product)
 

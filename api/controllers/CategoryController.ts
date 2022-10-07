@@ -10,6 +10,11 @@ enum MESSAGE {
 
 class CategoryController {
 
+  /* 
+    REGRAS DE NEGÓCIO: 
+
+     - Não é permitido que 2 categorias com mesmo nome sejam cadastradas
+  */
   async create(request: Request, response: Response){
     let category = request.body
 
@@ -24,8 +29,6 @@ class CategoryController {
     let result = await AppDataSource.query(
       `INSERT INTO Categoria (nome) VALUES ("${category.nome}")`
     )
-
-    console.log(result)
 
     return response.status(201).json({ id: result.insertId, ...category})
   }

@@ -14,6 +14,7 @@ routerProduct.route("/:id")
   .put(productController.update)
   .delete(productController.delete)
 
+// Rota onde é possível recuperar todos os produtos de um dado restaurante
 routerProduct.route("/:id/restaurant")
   .get(productController.get_by_restaurant)
 

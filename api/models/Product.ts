@@ -15,7 +15,7 @@ class Product{
   @Column("varchar", { length: 255})
   nome: string
 
-  // TODO: se eu excluir a categoria o que acontece???
+  // Decidi fazer o campo categoria ser uma tabela, para padronizar as categorias
   @ManyToOne((type) => Category/* , { onDelete: "CASCADE"} */)
   @JoinColumn({ name: 'idCategoria'})
   categoria: Category;
@@ -28,7 +28,6 @@ class Product{
   @JoinColumn({ name: 'idRestaurante'})
   restaurante: Restaurant;
 
-  // TODO: questão da imagem
 }
 
 export {Product}

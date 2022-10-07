@@ -11,9 +11,6 @@ const dotenv = require("dotenv")
 
 dotenv.config({ path: __dirname + process.env.NODE_ENV?.trim() === "test".trim() ? ".env.test" : ".env" });
 
-
-  console.log(process.env.NODE_ENV, process.env.NODE_ENV ==='test', process.env.NODE_ENV?.trim() === "test".trim())
-
   const AppDataSource = new DataSource({
     type: "mysql",
     host: process.env.DB_HOST,

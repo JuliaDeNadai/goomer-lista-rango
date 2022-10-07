@@ -1,26 +1,24 @@
 import 'express-async-errors';
 
 require("dotenv-safe").config({
-  path: /* process.env.NODE_ENV?.trim() == "test" ? ".env.test" : */ ".env",
+  path: process.env.NODE_ENV?.trim() === "test".trim() 
+  ? ".env.test" 
+  : ".env",
   allowEmptyValues: true
 });
-
-//import './database/mysql';
 
 import express from 'express';
 import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from "swagger-jsdoc";
 
-
-
 import router from './routes/index';
 import "reflect-metadata";
 
 import { errorMiddleware } from './middlewares/errorMiddleware';
-import { swaggerOptions } from '../swagger';
+import swaggerDocs  from '../swagger';
 
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
 const cors = require('cors');
 const app = express();
 var http = require('http').Server(app)
@@ -43,6 +41,7 @@ app.set("http", http);
 
 app.use('/api', router);
 
+// middleware que será utilizada para tratar todas as exceptions que forem lançadas durante a execução da API, evitando que ela crashe
 app.use(errorMiddleware)
 
 export {app};

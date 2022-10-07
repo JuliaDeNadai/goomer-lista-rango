@@ -14,6 +14,13 @@ const dia_semana = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta",
 
 class SaleController{
 
+  /* 
+    REGRAS DE NEGÓCIO: 
+     - Não é permitido que 2 promoções sejam criadas no mesmo dia e mesmo horário para um mesmo produto
+     - O horário de inicio DEVE ser MENOR que o horário de encerramento
+     - O tempo entre o horário de inicio e encerramento DEVE ser de no MÍNIMO 15 MINUTOS 
+     - Os campos de horário devem estar no formato HH:mm
+  */
   async create(request: Request, response: Response){
     let sale = request.body
     

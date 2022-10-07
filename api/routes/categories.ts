@@ -10,6 +10,5 @@ routerCategory.route("/")
 
 routerCategory.route("/:id")
     .get(categoryController.get_category)
-    //.put(categoryController.update)
 
 export {routerCategory}

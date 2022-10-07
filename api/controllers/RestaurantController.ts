@@ -13,8 +13,13 @@ enum MESSAGE {
 
 class RestaurantController {
 
-
-  // TODO: questão da fota
+  /* 
+    REGRAS DE NEGÓCIO: 
+     - Não é permitido que 2 restaurantes com mesmo nome sejam cadastrados
+     - O horário de abertura DEVE ser MENOR que o horário de encerramento
+     - O tempo entre o horário de abertura e encerramento DEVE ser de no MÍNIMO 15 MINUTOS 
+     - Os campos de horário devem estar no formato HH:mm
+  */
   async create(request: Request, response: Response){
     let restaurant = request.body
 

@@ -13,6 +13,10 @@ enum MESSAGE {
 
 class ProductController{
 
+  /* 
+    REGRAS DE NEGÓCIO: 
+     - Não é permitido que 2 produtos com mesmo nome sejam cadastrados no mesmo restaurante
+  */
   async create(request: Request, response: Response){
     let product = request.body
 
@@ -39,6 +43,11 @@ class ProductController{
 
     return response.status(201).json({id: result.insertId, ...product})
   }
+
+  /* 
+    REGRAS DE NEGÓCIO: 
+     - Caso o produto consultado esteja em promoção, também é retornado seu preço promocional
+  */
 
   async get_product(request: Request, response: Response){
     let {id} = request.params
