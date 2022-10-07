@@ -71,7 +71,7 @@ Antes que possa começar, é necessário ter as seguintes ferramentas instaladas
 
 > <details open>
 >	 <summary>
-> 		<b> Rodando testes (Infelizmente boa parte está falha) </b>
+> 		<b> Rodando testes </b>
 >	 </summary>
 > 
 > 	1. Inicie o servidor de testes:  
@@ -89,7 +89,7 @@ As seguintes ferramentas foram utilizadas para o desenvolvimento do projeto:
   [Typescript](https://www.typescriptlang.org/) + [Nodejs](https://nodejs.org/en/) + [Express](https://expressjs.com/pt-br/) + [Typeorm](https://typeorm.io/)
 
 ---
-## 😭 Desafios & Problemas
+## ⛰️ Desafios & Problemas
 
 * Criação dos testes, tanto unitários quanto testes de integração. Já havia trabalhado com testes de integração antes, porém com uma versão anterior do Typeorm, tive problemas para limpar os dados do banco após cada teste, dessa forma, infelizmente um teste atrapalhou o outro, não consegui concluir os testes de integração nem os unitários.
 
