@@ -41,6 +41,7 @@
 ### Recursos técnicos:  
 ✔️ Documentação com OpenAPI (swagger)  
 ✔️ Migrations para o banco de dados  
+✔️ Migrations para o banco de dados  
 
 ---
 
@@ -86,7 +87,7 @@ Antes que possa começar, é necessário ter as seguintes ferramentas instaladas
 
 As seguintes ferramentas foram utilizadas para o desenvolvimento do projeto:
 
-  [Typescript](https://www.typescriptlang.org/) + [Nodejs](https://nodejs.org/en/) + [Express](https://expressjs.com/pt-br/)
+  [Typescript](https://www.typescriptlang.org/) + [Nodejs](https://nodejs.org/en/) + [Express](https://expressjs.com/pt-br/) + [Typeorm](https://typeorm.io/)
 
 ---
 ## 😭 Desafios & Problemas
