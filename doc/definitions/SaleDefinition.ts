@@ -13,6 +13,10 @@ const Sale = {
     dia_semana: {
       type: "string",
     },
+    preco: {
+      type: "decimal",
+      format: "int64",
+    },
     inicio: {
       type: "number",
       format: "currency"

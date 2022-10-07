@@ -16,7 +16,7 @@ export const productsPaths = {
       update: updateProduct,
       delete: deleteProduct
     },
-    "/api/products/{id}/restaurants": {
+    "/api/products/{id}/restaurant": {
         get: getManyProductsByRestaurant,
       },
   };

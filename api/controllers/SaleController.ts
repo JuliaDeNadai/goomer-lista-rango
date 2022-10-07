@@ -42,11 +42,11 @@ class SaleController{
 
     let findDuplicatedSale = await AppDataSource.query(`
       SELECT * FROM Promocao 
-        WHERE dia_semana = "${dia_semana.indexOf(sale.dia_semana) + 1}"
+        WHERE dia_semana = ${dia_semana.indexOf(sale.dia_semana) + 1}
         AND ativa = 'Y'
         AND inicio BETWEEN ('${sale.inicio}') AND ('${sale.encerramento}')
         AND encerramento BETWEEN ('${sale.inicio}') AND ('${sale.encerramento}')
-        AND idProduto = ${sale.idProduto}
+        AND idProduto = ${sale.produto}
     `)
 
     if(findDuplicatedSale.length > 0 ) throw new ConflictError(MESSAGE.CONFLICT)
