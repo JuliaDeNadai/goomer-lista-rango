@@ -41,7 +41,6 @@
 ### Recursos técnicos:  
 ✔️ Documentação com OpenAPI (swagger)  
 ✔️ Migrations para o banco de dados  
-✔️ Migrations para o banco de dados  
 
 ---
 
@@ -92,14 +91,14 @@ As seguintes ferramentas foram utilizadas para o desenvolvimento do projeto:
 ---
 ## 😭 Desafios & Problemas
 
-* Criação dos testes, tanto unitários quanto testes de integração. Já havia trabalhado com testes de integração antes, porém com uma versão anterior do Typeorm, tive problemas para limpar os dados do banco após cada teste, dessa forma, infelizmente um teste atrapalhou o outro, não consegui concluir os testes.
+* Criação dos testes, tanto unitários quanto testes de integração. Já havia trabalhado com testes de integração antes, porém com uma versão anterior do Typeorm, tive problemas para limpar os dados do banco após cada teste, dessa forma, infelizmente um teste atrapalhou o outro, não consegui concluir os testes de integração nem os unitários.
 
 * Dificuldade para lidar com a foto do restaurante e do produto. Inicialmente pensei em fazer do campo foto uma string, onde seria armazenado o caminho para a pasta onde a foto estaria armazenada de fato. Mas não consegui executar como o planejado, não consegui fazer requisição com a imagem e o formato json no body na mesma requisição, dessa forma não consegui seguir como planejado.
 
 
 ## 📈 Melhorias
 
-* Trabalhar melhor com TDD, dessa forma sendo possível fazer uma boa utilização de testes unitários e de integração, o que vai assegurar a qualidade e previnir erros inesperados na API.
+* Trabalhar melhor com TDD, dessa forma sendo possível fazer uma boa utilização de testes unitários e de integração, o que vai assegurar a qualidade e prevenir erros inesperados na API.
 
 * Implementar nas rotas de delete a utilização do soft delete, dessa forma, é possível manter histórico de registros mesmo que já tenham sido "apagados". Permite também uma recuperação mais simples caso uma exclusão acidental ocorra.
 
@@ -107,7 +106,9 @@ As seguintes ferramentas foram utilizadas para o desenvolvimento do projeto:
 
 * Adicionar alem da rota PUT, uma rota PATCH, onde é possível alterar algumas propriedades do restaurante e produto.
 
-* Fazer melhor utilização dos middlwares e utilizr verificações para garantir parâmetros corretos vindo do body da requisição.
+* Fazer melhor utilização dos middlwares e utilizar verificações para garantir parâmetros corretos vindo do body da requisição.
+
+* Também fazer uma melhor utilização do Github. Sei que não é recomendado, mas durante esse projeto subi todas as atualizações diretamente na main, o que não é correto.
 
 ## 👓 Decisões Técnicas
 
@@ -117,7 +118,7 @@ Decidi criar uma tabela só para promoções, dessa forma é possível criar mai
 
 ### Categorias de produtos
 
-Para lidar com o campo de categoria, decidi criar uma tabela somente para isso, assim é possível padronizar as categorias, tornando muito mais simples a classificação dos produtos e a recuperação dos dados. Dessa forma também se evita erros operacionais que podem ocorrer as digitar a mesma categoria ao cadastrar cada produto.
+Para lidar com o campo de categoria, decidi criar uma tabela somente para isso, assim é possível padronizar as categorias, tornando muito mais simples a classificação dos produtos e a recuperação dos dados. Dessa forma também se evita erros operacionais que podem ocorrer ao digitar a mesma categoria ao cadastrar cada produto.
 
 ---
 
