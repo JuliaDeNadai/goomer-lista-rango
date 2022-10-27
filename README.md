@@ -1,9 +1,9 @@
 <h1 align="center">
-   <a href="#"> Goomer Lista Rango </a>
+   <a href="#"> Savour API </a>
 </h1>
 
 <h3 align="center">
-    API RESTful capaz de gerenciar os restaurantes e os produtos do seu cardápio.
+    API RESTful criada para gerenciar restaurantes e seus produtos.
 </h3>
 
 
@@ -11,10 +11,7 @@
  <a href="#%EF%B8%8F-features">Features</a> •
  <a href="#-iniciando-o-projeto">Iniciando o projeto</a> • 
  <a href="#-stack">Stack</a> •
- <a href="#-desafios-&-problemas">Desafios & Problemas</a> •
- <a href="#-melhorias">Melhorias</a> •
-  <a href="#-decisões-técnicas">Decisões técnicas</a> •
-  <a href="#%EF%B8%8F-autor">Autor</a> 
+ <a href="#%EF%B8%8F-autor">Autor</a> 
 </p>
 
 
@@ -87,38 +84,6 @@ Antes que possa começar, é necessário ter as seguintes ferramentas instaladas
 As seguintes ferramentas foram utilizadas para o desenvolvimento do projeto:
 
   [Typescript](https://www.typescriptlang.org/) + [Nodejs](https://nodejs.org/en/) + [Express](https://expressjs.com/pt-br/) + [Typeorm](https://typeorm.io/)
-
----
-## ⛰️ Desafios & Problemas
-
-* Criação dos testes, tanto unitários quanto testes de integração. Já havia trabalhado com testes de integração antes, porém com uma versão anterior do Typeorm, tive problemas para limpar os dados do banco após cada teste, dessa forma, infelizmente um teste atrapalhou o outro, não consegui concluir os testes de integração nem os unitários.
-
-* Dificuldade para lidar com a foto do restaurante e do produto. Inicialmente pensei em fazer do campo foto uma string, onde seria armazenado o caminho para a pasta onde a foto estaria armazenada de fato. Mas não consegui executar como o planejado, não consegui fazer requisição com a imagem e o formato json no body na mesma requisição, dessa forma não consegui seguir como planejado.
-
-
-## 📈 Melhorias
-
-* Trabalhar melhor com TDD, dessa forma sendo possível fazer uma boa utilização de testes unitários e de integração, o que vai assegurar a qualidade e prevenir erros inesperados na API.
-
-* Implementar nas rotas de delete a utilização do soft delete, dessa forma, é possível manter histórico de registros mesmo que já tenham sido "apagados". Permite também uma recuperação mais simples caso uma exclusão acidental ocorra.
-
-* Implementar filtros com a utilização de query strings, assim não se faz necessário criar rotas alternativas para cada filtro que seja necessário.
-
-* Adicionar alem da rota PUT, uma rota PATCH, onde é possível alterar algumas propriedades do restaurante e produto.
-
-* Fazer melhor utilização dos middlwares e utilizar verificações para garantir parâmetros corretos vindo do body da requisição.
-
-* Também fazer uma melhor utilização do Github. Sei que não é recomendado, mas durante esse projeto subi todas as atualizações diretamente na main, o que não é correto.
-
-## 👓 Decisões Técnicas
-
-### Como tratar os diferentes preços da promoção?
-
-Decidi criar uma tabela só para promoções, dessa forma é possível criar mais que 1 promoção para cada produto, além fazer manutenção desses dados de forma mais simples. 
-
-### Categorias de produtos
-
-Para lidar com o campo de categoria, decidi criar uma tabela somente para isso, assim é possível padronizar as categorias, tornando muito mais simples a classificação dos produtos e a recuperação dos dados. Dessa forma também se evita erros operacionais que podem ocorrer ao digitar a mesma categoria ao cadastrar cada produto.
 
 ---
 
