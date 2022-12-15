@@ -56,14 +56,14 @@ Antes que possa começar, é necessário ter as seguintes ferramentas instaladas
 >	 </summary>
 > 
 >	 1. Clone o repositório:  
->	 	`$ git clone https://github.com/JuliaDeNadai/goomer-lista-rango.git`  
+>	 	`$ git clone https://github.com/JuliaDeNadai/savourAPI.git`  
 > 	2. Acesse a pasta do projeto pelo terminal:  
->	 	`$ cd goomer-lista-rango`  
+>	 	`$ cd savourAPI`  
 > 	3. Instale todas as dependências do projeto:  
 > 		`$ npm install`   
 > 	4. Rode a aplicação com:  
 > 		`$ yarn dev `  
->	 6. O servidor irá iniciar na porta: 3308 - [veja a documentação](http://localhost:3308/goomer-lista-rango-api)
+>	 6. O servidor irá iniciar na porta: 3308 - [veja a documentação](http://localhost:3308/savourAPI)
 > </details>
 
 > <details open>
