@@ -1,6 +1,8 @@
 import {Request, Response} from 'express'
-import { AppDataSource } from '../../ormconfig'
+
 import { BadRequestError, ConflictError, NotFoundError } from '../utils/internalErrors'
+import { CategoryRepository } from '../repositories/CategoryRepository';
+import { AppDataSource } from '../../ormconfig';
 
 enum MESSAGE {
   BAD_REQUEST = 'Dados incompletos',
@@ -15,30 +17,24 @@ class CategoryController {
 
      - Não é permitido que 2 categorias com mesmo nome sejam cadastradas
   */
-  async create(request: Request, response: Response){
-    let category = request.body
+  async create( request: Request, response: Response ){
+    const {category} = request.body
 
-    if(Object.keys(category).length === 0 ) throw new BadRequestError(MESSAGE.BAD_REQUEST)
+    if(Object.keys(category).length === 0) throw new BadRequestError(MESSAGE.BAD_REQUEST)
 
-    let findCategory = await AppDataSource.query(
-      `SELECT * FROM Categoria WHERE nome = "${category.nome}"`
-    )
+    const categoryRepo = new CategoryRepository()
 
-    if(findCategory.length > 0) throw new ConflictError(MESSAGE.CONFLICT_NAME)
-    
-    let result = await AppDataSource.query(
-      `INSERT INTO Categoria (nome) VALUES ("${category.nome}")`
-    )
+    let createCategory = await categoryRepo.save(category.nome) 
 
-    return response.status(201).json({ id: result.insertId, ...category})
+    return response.status(201).json({ id: createCategory.insertId, ...category})
   }
 
   async get_category(request: Request, response: Response){
-    let {id} = request.params
+    let { id } = request.params
 
-    let findCategory = await AppDataSource.query(
-      `SELECT * FROM Categoria WHERE id = ${id}`
-    )
+    const categoryRepo = new CategoryRepository()
+
+    let findCategory = await categoryRepo.getById(id) 
 
     if(findCategory.length === 0) throw new NotFoundError(MESSAGE.NOT_FOUND)
 
@@ -47,4 +43,4 @@ class CategoryController {
 
 }
 
-export {CategoryController}
+export { CategoryController }
