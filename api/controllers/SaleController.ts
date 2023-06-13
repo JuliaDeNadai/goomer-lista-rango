@@ -1,6 +1,8 @@
 import {Request, Response} from 'express'
 import { AppDataSource } from '../../ormconfig'
 import { BadRequestError, ConflictError, NotFoundError } from '../utils/internalErrors'
+import { SaleRepository } from '../repositories/SaleRepository';
+import { ProductRepository } from '../repositories/ProductRepository';
 
 enum MESSAGE {
   BAD_REQUEST = 'Dados incompletos',
@@ -10,9 +12,9 @@ enum MESSAGE {
   NOT_FOUND_PRODUCT = 'Produto não encontrada',
 }
 
-const dia_semana = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
 
 class SaleController{
+
 
   /* 
     REGRAS DE NEGÓCIO: 
@@ -36,26 +38,12 @@ class SaleController{
 
       throw new BadRequestError(MESSAGE.BAD_REQUEST_INVALID_TIME)
     }
-    let findProduct = await AppDataSource.query(`SELECT * FROM Produto WHERE id = ${sale.produto}`)
 
-    if(findProduct.length === 0 ) throw new NotFoundError(MESSAGE.NOT_FOUND_PRODUCT)
+    const productRepo = new ProductRepository()
+    let findProduct = await productRepo.getProductById(sale.producto)
 
-    let findDuplicatedSale = await AppDataSource.query(`
-      SELECT * FROM Promocao 
-        WHERE dia_semana = ${dia_semana.indexOf(sale.dia_semana) + 1}
-        AND ativa = 'Y'
-        AND inicio BETWEEN ('${sale.inicio}') AND ('${sale.encerramento}')
-        AND encerramento BETWEEN ('${sale.inicio}') AND ('${sale.encerramento}')
-        AND idProduto = ${sale.produto}
-    `)
-
-    if(findDuplicatedSale.length > 0 ) throw new ConflictError(MESSAGE.CONFLICT)
-
-    let result = await AppDataSource.query(`
-      INSERT INTO Promocao 
-        (descricao, preco, dia_semana, inicio, encerramento, ativa, idProduto)
-      VALUES ("${sale.descricao}", "${sale.preco}", "${dia_semana.indexOf(sale.dia_semana) + 1}", "${sale.inicio}", "${sale.encerramento}", "Y", ${sale.produto})
-    `)
+    const repository = new SaleRepository()
+    let result = await repository.create(sale)
 
     return response.status(201).json({id: result.insertId, ...sale})
 
@@ -64,20 +52,10 @@ class SaleController{
   async get_sale(request: Request, response: Response){
     let {id} = request.params
 
-    let findSale = await AppDataSource.query(`
-      SELECT 
-        r.descricao,
-        r.dia_semana,
-        DATE_FORMAT(r.inicio, '%H:%i') as inicio, 
-        DATE_FORMAT(r.encerramento, '%H:%i') as encerramento 
-      FROM Promocao r 
-      WHERE r.id = ${id}
-    `)
-
-    if(findSale.length == 0 ) throw new NotFoundError(MESSAGE.NOT_FOUND)
+    const repository = new SaleRepository()
+    let findSale = await repository.getSaleById(Number(id))
 
     return response.status(200).json(findSale[0])
-
   }
 
   async get_sales_by_product(request: Request, response: Response){
@@ -100,16 +78,8 @@ class SaleController{
       page = '1';
     }
 
-    let findSales = await AppDataSource.query(`
-      SELECT 
-        r.id,
-        r.descricao,
-        r.dia_semana,
-        DATE_FORMAT(r.inicio, '%H:%i') as inicio, 
-        DATE_FORMAT(r.encerramento, '%H:%i') as encerramento 
-      FROM Promocao r 
-      WHERE r.idProduto = ${id}
-    `)
+    const repository = new SaleRepository()
+    let findSales = await repository.getSaleByProductId(Number(id))
 
     const getQuery = () => Object.keys(q).map((key) => `${key}=${q[key]}`).join('&');
 

@@ -23,7 +23,7 @@ const cors = require('cors');
 const app = express();
 var http = require('http').Server(app)
 
-app.use("/goomer-lista-rango-api", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/savour-api", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(morgan('combined'));
 
 app.use(express.json());

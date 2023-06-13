@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { DriverError, InternalError } from "../utils/internalErrors";
+import { ConflictError, DriverError, InternalError } from "../utils/internalErrors";
 import { Logger } from "../utils/Logger";
 
 /* 

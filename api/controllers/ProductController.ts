@@ -2,6 +2,8 @@ import {Request, Response} from 'express'
 import { AppDataSource } from '../../ormconfig'
 import { Restaurant } from '../models/Restaurant'
 import { BadRequestError, ConflictError, NotFoundError } from '../utils/internalErrors'
+import { ProductRepository } from '../repositories/ProductRepository'
+import { SaleRepository } from '../repositories/SaleRepository'
 
 enum MESSAGE {
   BAD_REQUEST = 'Dados incompletos',
@@ -18,28 +20,14 @@ class ProductController{
      - Não é permitido que 2 produtos com mesmo nome sejam cadastrados no mesmo restaurante
   */
   async create(request: Request, response: Response){
+
     let product = request.body
 
     if(Object.keys(product).length === 0) throw new BadRequestError(MESSAGE.BAD_REQUEST)
 
-    let duplicatedProduct = await AppDataSource.query(`
-      SELECT * FROM Produto WHERE nome = "${product.nome}" AND idRestaurante = ${product.restaurante}
-    `)
+    const productRepo = new ProductRepository()
 
-    if(duplicatedProduct.length > 0) throw new ConflictError(MESSAGE.CONFLICT_NAME)
-
-    let findRestaurant = await AppDataSource.query(`SELECT * FROM Restaurante WHERE id = ${product.restaurante}`)
-
-    if(findRestaurant.length === 0) throw new NotFoundError(MESSAGE.NOT_FOUND_RESTAURANT)
-
-    let findCategory = await AppDataSource.query(`SELECT * FROM Categoria WHERE id = ${product.categoria}`)
-
-    if(findCategory.length === 0) throw new NotFoundError(MESSAGE.NOT_FOUND_CATEGORY)
-
-    let result = await AppDataSource.query(`
-      INSERT INTO Produto (nome, idCategoria, preco, idRestaurante)
-       VALUES ("${product.nome}", ${product.categoria}, ${product.preco}, ${product.restaurante})
-    `)
+    let result = await productRepo.save(product)
 
     return response.status(201).json({id: result.insertId, ...product})
   }
@@ -48,23 +36,16 @@ class ProductController{
     REGRAS DE NEGÓCIO: 
      - Caso o produto consultado esteja em promoção, também é retornado seu preço promocional
   */
-
   async get_product(request: Request, response: Response){
     let {id} = request.params
 
-    let findSalePrice = await AppDataSource.query(`
-      SELECT *
-      FROM goomer.produto p
-      RIGHT JOIN goomer.promocao pr ON pr.idProduto = p.id
-      WHERE p.id = ${id} 
-        AND pr.ativa = 'Y' 
-        AND current_time BETWEEN pr.inicio AND pr.encerramento 
-        and pr.dia_semana = DAYOFWEEK(current_date())
-    `)
+    const saleRepo = new SaleRepository()
+    let findSalePrice = await saleRepo.getSaleByProductId(Number(id)) 
 
     if(findSalePrice.length > 0) return response.status(200).json(findSalePrice)
 
-    let findProduct = await AppDataSource.query(`SELECT * FROM Produto WHERE id = ${id}`)
+    const productRepo = new ProductRepository()
+    let findProduct = await productRepo.getProductById(Number(id)) 
 
     if(findProduct.length === 0) throw new NotFoundError(MESSAGE.NOT_FOUND)
 
@@ -76,56 +57,13 @@ class ProductController{
     let {id} = request.params
     let product = request.body
 
-    let updateString = ''
+    if(product.keys > 0){
 
-    if(Object.keys(product).length === 0) throw new BadRequestError(MESSAGE.BAD_REQUEST)
+      const productRepo = new ProductRepository()
 
-    let findProduct = await AppDataSource.query(`
-      SELECT * FROM Produto WHERE id = ${id}
-    `)
+      let updateRestaurant = await productRepo.update(product, id) 
 
-    if(findProduct.length === 0 ) throw new NotFoundError(MESSAGE.NOT_FOUND)
-
-    if(product.nome){
-
-      let duplicatedProduct = await AppDataSource.query(`
-        SELECT * FROM Produto WHERE nome = "${product.nome}" AND id != ${id} AND idRestaurante = ${findProduct.idRestaurante}
-      `)
-  
-      if(duplicatedProduct.length > 0) throw new ConflictError(MESSAGE.CONFLICT_NAME)
-
-      updateString.concat(`nome = "${product.nome}"`)
-    }
-
-    if(product.restaurante){
-      let findRestaurant = await AppDataSource.query(`SELECT * FROM Restaurante WHERE id = ${product.restaurante}`)
-  
-      if(findRestaurant.length === 0) throw new NotFoundError(MESSAGE.NOT_FOUND_RESTAURANT)
-
-      updateString.concat(`idRestaurante = "${product.restaurante}"`)
-
-    }
-
-    if(product.categoria){
-      let findCategory = await AppDataSource.query(`SELECT * FROM Categoria WHERE id = ${product.categoria}`)
-  
-      if(findCategory.length === 0) throw new NotFoundError(MESSAGE.NOT_FOUND_CATEGORY)
-
-      updateString.concat(`idCategoria = "${product.categoria}"`)
-    }
-
-    if(updateString.length > 0){
-
-      let updateRestaurant = await AppDataSource.query(
-        `UPDATE Restaurante 
-          SET nome = "${product.nome}",
-              preco = ${product.preco},
-              idCategoria = ${product.categoria},
-              idRestaurante = ${product.restaurante}
-          WHERE id = ${id}`
-      )
-
-      return response.sendStatus(200)
+      return response.sendStatus(200).json(updateRestaurant)
     }
     else throw new BadRequestError(MESSAGE.BAD_REQUEST)
   }
@@ -133,7 +71,9 @@ class ProductController{
   async delete(request: Request, response: Response){
     let {id} = request.params
 
-    let deleteProduct = await AppDataSource.query(`DELETE FROM Produto WHERE id= ${id}`)
+    const productRepo = new ProductRepository()
+
+    let deleteProduct = await productRepo.delete(Number(id))
 
     if(deleteProduct.affectedRows === 0) throw new NotFoundError(MESSAGE.NOT_FOUND)
 
@@ -157,8 +97,10 @@ class ProductController{
       realPage = 0;
       page = '1';
     }
+
+    const productRepo = new ProductRepository()
     
-    let findProducts = await AppDataSource.query(`SELECT * FROM Produto`)
+    let findProducts = await productRepo.getAll()
 
     const getQuery = () => Object.keys(q).map((key) => `${key}=${q[key]}`).join('&');
 
@@ -207,7 +149,9 @@ class ProductController{
       page = '1';
     }
     
-    let findProducts = await AppDataSource.query(`SELECT * FROM Produto WHERE idRestaurante = ${id}`)
+    const productRepo = new ProductRepository()
+
+    let findProducts = await productRepo.getByRestaurant(Number(id))
     
     const getQuery = () => Object.keys(q).map((key) => `${key}=${q[key]}`).join('&');
 
